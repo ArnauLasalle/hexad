@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project name="gsb-dependency" basedir="." default="integrationJar">
+    <property name="src"     value="target"/>
+    <property name="class.dir"      value="${java.io.tmpdir}/integration.bin"/>
+    <property name="jar.dir"        value="build/integration-dist"/>
+    <property name="jar.file"       value="${jar.dir}/${ant.project.name}.jar"/>
+
+    <target name="integrationClean" description="delete old files">
+        <delete dir="${class.dir}"/>
+		<delete file="${jar.file}"/>
+    </target>
+
+    <target name="integrationCompile" description="build class files" depends="integrationClean" >
+        <mkdir dir="${class.dir}"/>
+        <javac destdir="${class.dir}" target="1.8" source="1.8">
+        	<src path="${src}" />
+        </javac>
+    </target>
+
+    <target name="integrationJar" depends="integrationCompile">
+        <jar destfile="${jar.file}" duplicate="preserve">
+            <fileset dir="${class.dir}"></fileset>
+        	<fileset dir="${src}" excludes="**/*.class"></fileset>
+        </jar>
+    </target>
+
+</project>
